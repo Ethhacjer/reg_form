@@ -1,0 +1,85 @@
+body {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+}
+form {
+        display: flex;
+        align-items: center;
+        width: 450px;
+        padding: 30px;
+        border: 2px solid black;
+        border-radius: 20px;
+        box-shadow: 5px 5px 5px gray;
+        background-color: white;
+}
+div{
+        margin-left: 1 0px;
+        margin-right: 40px;
+        font-size: 14px;
+}
+label{
+        margin-left: 40px;
+        font-weight: bold;
+}
+#name{
+        height: 45px;
+        width: 180px;
+        margin-left: 92px;
+        border-radius: 5px;
+        border-width: thin;
+        border: 2px solid rgba(0, 0, 0, 0.4);font-size: 14px;
+}
+#email {
+        height: 45px;
+        width: 180px;
+        border-radius: 5px;
+        margin-left: 95px;
+        border-width: thin;
+        border: 2px solid rgba(0, 0, 0, 0.4);
+}
+#password {
+        height: 45px;
+        width: 180px;
+        border-radius: 5px;
+        margin-left: 62px;
+        border-width: thin;
+        border: 2px solid rgba(0, 0, 0, 0.4);
+}
+#dob{
+        height: 45px;
+        width: 180px;
+        border-radius: 5px;
+        margin-left: 37px;
+        border-width: thin;
+        border: 2px solid rgba(0, 0, 0, 0.4);
+}
+button{
+        height:40px;
+        width: 100px;
+        border-radius: 5px;
+        border-width: thin;
+        background-color: rgb(7,184,7);
+        color: #ffffff;
+}
+table {
+        border: 2px solid black;
+        margin: 10px auto;
+}
+td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+}
+th {
+        padding: 10px;
+        text-align: center;
+}
+.container {
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: auto;
+        width:auto;
+} 
