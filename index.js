@@ -1,34 +1,7 @@
-const form = document.querySelector('#registration-form');
-const table = document.querySelector('#user-table tbody');
 
-// // Load user data from local storage and display it
-// const loadUserData = () => {
-//   // Clearing the table
-//   table.innerHTML = '';
-
-//   if (localStorage.getItem('users')) {
-//     const users = JSON.parse(localStorage.getItem('users'));
-//     users.forEach(user => {
-//       const newRow = table.insertRow();
-//       const nameCell = newRow.insertCell();
-//       const emailCell = newRow.insertCell();
-//       const passwordCell = newRow.insertCell();
-//       const dobCell = newRow.insertCell();
-//       const acceptedTermsCell = newRow.insertCell();
-
-//       nameCell.innerText = user.name;
-//       emailCell.innerText = user.email;
-//       passwordCell.innerText = user.password;
-//       dobCell.innerText = new Date(user.dob).toISOString().slice(0,10);
-//       acceptedTermsCell.innerText = user.acceptedTerms ? 'true' : 'false';
-//     });
-//   }
-// };
-
-// loadUserData();
+//function to retrive entries
 const retriveEntries = () => {
-  let entries = localStorage.getItem("userEntry");
-
+  let entries = localStorage.getItem("user-Entries");
   if (entries) {
     entries = JSON.parse(entries);
   } else {
@@ -37,134 +10,90 @@ const retriveEntries = () => {
   return entries;
 };
 
-let Entries = retriveEntries();
 
+// 
 const displayEntries = () => {
-  const entries = retriveEntries();
-
-  const rows = entries
-    .map((entry) => {
+    const entries =retriveEntries();
+    const rowEntries = entries.map((entry) => {
       const name = `<td class="td">${entry.name}</td>`;
       const email = `<td class="td">${entry.email}</td>`;
       const password = `<td class="td">${entry.password}</td>`;
       const dob = `<td class="td">${entry.dob}</td>`;
-      const accseptConditions = `<td class="td">${entry.accseptConditions}</td>`;
+      const acceptTaC = `<td class="td">${entry.acceptTaC}</td>`;
 
-      const row = `<tr>${name} ${email} ${password} ${dob} ${accseptConditions}</tr>`;
+      const row = `<tr>${name} ${email} ${password} ${dob} ${acceptTaC}</tr>`;
       return row;
-    })
-    .join("\n");
+    }).join("\n");
+    const table = `<table class="table-auto" border="3"><tr>
+                   <th class="th">Name</th>
+                   <th class="th">Email</th>
+                   <th class="th">Password</th>
+                   <th class="th">dob</th>
+                   <th class="th">Accepted Terms?</th>
+                   </tr>${rowEntries}</table>`
 
-  let tableDiv = document.getElementById("tableDiv");
+    let details = document.getElementById("user-entries");
 
-  // <th class="th">Name</th> inside oneMore head for name
-  tableDiv.innerHTML = `<table class="table" border="2">
-  <tr>
-    <th class="th">Name</th>
-    <th class="th">Email</th>
-    <th class="th">Password</th>
-    <th class="th">Dob</th>
-    <th class="th">Accepted terms?</th>
-  </tr>
-    ${rows}
-  </table>`;
-};
+    details.innerHTML=table;
 
-// const saveUserFrom = () => {
-const saveUserFrom = (event) => {
-  event.preventDefault();
+}
 
-  let name = document.getElementById("name").value;
-  let email = document.getElementById("email").value;
-  let password = document.getElementById("password").value;
-  let dob = document.getElementById("dob").value;
-  let accseptConditions = document.getElementById("agree").checked;
 
-  let entry_obj = {
-    name,
-    email,
-    password,
-    dob,
-    accseptConditions,
-  };
+const saveUserForm = (event) => {
+    event.preventDefault();
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const dob = document.getElementById("dob").value;
+    const password = document.getElementById("password").value;
 
-  Entries.push(entry_obj);
+    const acceptTaC = document.getElementById("checkbox").checked;
 
-  localStorage.setItem("userEntry", JSON.stringify(Entries));
+    const entry = {
+        name,
+        email,
+        password,
+        dob,
+        acceptTaC
+    };
 
-  displayEntries();
-};
+    userEntries.push(entry);
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const name = document.querySelector('#name').value;
-  const email = document.querySelector('#email').value;
-  const password = document.querySelector('#password').value;
-  const dobInput = document.querySelector('#dob');
-  // const dob = document.getElementById('dob').value;
-  const acceptedTerms = document.querySelector('#checkbox').checked;
-  const dobInput = document.getElementById('dob');
-  dobInput.addEventListener('input', validateAge);
-  function validateAge() {
-    const dob = new Date(dobInput.value);
-    const ageInMs = Date.now() - dob.getTime();
-    const ageInYears = ageInMs / (1000 * 60 * 60 * 24 * 365);
-    if (ageInYears < 18 || ageInYears > 55) {
-      dobInput.setCustomValidity('You must be between 18 and 55 years old to register.');
-    } else {
-      dobInput.setCustomValidity('');
-    }
+    localStorage.setItem("user-Entries", JSON.stringify(userEntries));
+    displayEntries();
+}
+
+function getAge(today, birthDate) {
+  var age = today.getFullYear() - birthDate.getFullYear();
+  var m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 ){
+    age--;
+  }else if(m === 0 && today.getDate() < birthDate.getDate()) {
+    age--;
   }
-  // const date = new Date(dob);
-  // const nxtdate = new Date();
-  // const maxidate = (new Date(nxtdate.getFullYear() - 55, nxtdate.getMonth(), nxtdate.getDate()))
-  // const minidate = (new Date(nxtdate.getFullYear() - 18, nxtdate.getMonth(), nxtdate.getDate()));
+  return age;
+}
 
-  // if (date < maxidate || date > minidate) {
-  //       alert('Enter a valid date of birth- between 18 and 55 years ago.');
-  //       return;
-  //   }
+const dobcheck = () => {
+  let [year, month, date] = document.getElementById("dob").value.split("-");
 
-  // Create a user object with the form data
-  const user = {
-    name: name,
-    email: email,
-    password: password,
-    dob: dob,
-    acceptedTerms: acceptedTerms
-  };
+  let dob = new Date(year, month, date);
+  let Today = new Date();
 
-  // Get existing users from local storage or initialize an empty array
-  let users = JSON.parse(localStorage.getItem('users')) || [];
+  age = getAge(Today, dob);
+    dateELE.style.border = "2px solid rgba(0, 0, 0, 0.4)";
+  if (age < 18 || age > 55) {
+    dateELE.setCustomValidity("Your age is not lies between 18 and 55");
+    dateELE.style.border = "2px solid red";
+    return;
+  } else {
+    dateELE.setCustomValidity("");
+  }
+}
 
-  // Add the new user to the array
-  users.push(user);
-
-  // Save the updated array back to local storage
-  localStorage.setItem('users', JSON.stringify(users));
-
-  // Add the new row to the table
-  const newRow = table.insertRow();
-  const nameCell = newRow.insertCell();
-  const emailCell = newRow.insertCell();
-  const passwordCell = newRow.insertCell();
-  const dobCell = newRow.insertCell();
-  const acceptedTermsCell = newRow.insertCell();
-
-  nameCell.innerText = name;
-  emailCell.innerText = email;
-  passwordCell.innerText = password;
-  dobCell.innerText = new Date(user.dob).toISOString().slice(0,10);
-  acceptedTermsCell.innerText = acceptedTerms ? 'true' : 'false';
-
-  // Reset the form
-  // form.reset();
-
-  // Load and display the updated user data
-  loadUserData();
-});
-
-// Clear the table and local storage when the form is reset
-form.addEventListener('reset', () => {
-  table.innerHTML = '';
-});
+let dateELE = document.getElementById("dob");
+dateELE.addEventListener("input", dobcheck);
+let userEntries = retriveEntries();
+displayEntries();
+let userForm = document.getElementById("registration-form");
+userForm.addEventListener("submit",saveUserForm);
+displayEntries();
