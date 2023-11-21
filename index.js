@@ -81,12 +81,12 @@ const dateERROR = () => {
 
   age = getAge(Today, dob);
     EOD.style.border = "2px solid rgba(0, 0, 0, 0.4)";
-  if (age > 18 || age < 55) {
-    EOD.setCustomValidity("");
-  } else {
+  if (age < 18 || age > 55) {
     EOD.setCustomValidity("Your age is not lies between 18 and 55");
     EOD.style.border = "2px solid red";
     return;
+  } else {
+    EOD.setCustomValidity("");
   }
 }
 
