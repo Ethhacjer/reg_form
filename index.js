@@ -73,25 +73,25 @@ function getAge(today, birthDate) {
   return age;
 }
 
-const dobcheck = () => {
+const dateERROR = () => {
   let [year, month, date] = document.getElementById("dob").value.split("-");
 
   let dob = new Date(year, month, date);
   let Today = new Date();
 
   age = getAge(Today, dob);
-    dateELE.style.border = "2px solid rgba(0, 0, 0, 0.4)";
-  if (age < 18 || age > 55) {
-    dateELE.setCustomValidity("Your age is not lies between 18 and 55");
-    dateELE.style.border = "2px solid red";
-    return;
+    EOD.style.border = "2px solid rgba(0, 0, 0, 0.4)";
+  if (age > 18 || age < 55) {
+    EOD.setCustomValidity("");
   } else {
-    dateELE.setCustomValidity("");
+    EOD.setCustomValidity("Your age is not lies between 18 and 55");
+    EOD.style.border = "2px solid red";
+    return;
   }
 }
 
-let dateELE = document.getElementById("dob");
-dateELE.addEventListener("input", dobcheck);
+let EOD = document.getElementById("dob");
+EOD.addEventListener("input", dateERROR);
 let userEntries = retriveEntries();
 displayEntries();
 let userForm = document.getElementById("registration-form");
